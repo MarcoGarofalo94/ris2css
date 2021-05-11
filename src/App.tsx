@@ -1,12 +1,12 @@
-import './App.css';
+import "./App.css";
 
-import { IconButton, Tooltip } from '@material-ui/core';
-import React from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { vs2015 } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { IconButton, Tooltip } from "@material-ui/core";
+import React from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { vs2015 } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
-import logo from './logo.svg';
+import logo from "./logo.svg";
 
 const reactToCSS = require("react-style-object-to-css");
 
@@ -19,15 +19,14 @@ function App() {
 
   React.useEffect(() => {
     try {
-      
-      const obj = eval("(" + inputCSS + ")");
+      const obj = new Function('"use strict";return (' + inputCSS + ")")();
 
       const result = reactToCSS(obj);
       setOutputCSS(
         "\n{\n  " + result.split(";").join(";\n").trimEnd() + "\n}\n"
       );
     } catch (error) {
-      console.log('bad input - please make sure its a javascript object');
+      console.log("bad input - please make sure its a javascript object");
     }
   }, [inputCSS]);
   return (
@@ -79,7 +78,10 @@ function App() {
             <div style={{ position: "absolute", top: "1%", right: "0" }}>
               <CopyToClipboard text={outputCSS} onCopy={() => setCopied(true)}>
                 <Tooltip title={copied ? "Copied!" : "Copy"}>
-                  <IconButton style={{ width: "52px", height: "52px" }} onMouseLeave={() => setTimeout(() =>setCopied(false),100)}>
+                  <IconButton
+                    style={{ width: "52px", height: "52px" }}
+                    onMouseLeave={() => setTimeout(() => setCopied(false), 100)}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6"
@@ -101,9 +103,7 @@ function App() {
           </div>
         </div>
       </header>
-      <footer className="App-footer">
-        @ Marco Garofalo
-      </footer>
+      <footer className="App-footer">@ Marco Garofalo</footer>
     </div>
   );
 }
